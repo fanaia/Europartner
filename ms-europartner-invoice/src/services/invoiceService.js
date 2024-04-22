@@ -1,5 +1,3 @@
-const fs = require("fs");
-
 const ejs = require("ejs");
 const logger = require("../config/logger");
 const { generatePDF } = require("../components/pdfGenerator");
@@ -13,21 +11,21 @@ const { apiRetaguarda } = require("../config/apiRetaguarda");
 const invoiceService = {
   gerarInvoice: async (authOmie, idOrdemServico) => {
     try {
-      const resEmpresa = await apiRetaguarda.get(`empresas?authOmie.appKey=${authOmie.appKey}`);
+      const [resEmpresa, resIncludes, resTemplates, resMoedas] = await Promise.all([
+        apiRetaguarda.get(`empresas?authOmie.appKey=${authOmie.appKey}`),
+        apiRetaguarda.get(`includes`),
+        apiRetaguarda.get(`templates`),
+        apiRetaguarda.get(`moedas`),
+      ]);
+
       const empresa = resEmpresa.data[0];
-
-      const resTemplates = await apiRetaguarda.get(`templates`);
-      const templates = resTemplates.data;
-      const invoice = templates.find((template) => template.nome === "invoice").templateEjs;
-      const emailAssunto = templates.find(
-        (template) => template.nome === "email-assunto"
-      ).templateEjs;
-      const emailCorpo = templates.find((template) => template.nome === "email-corpo").templateEjs;
-
-      const resIncludes = await apiRetaguarda.get(`includes`);
       const includes = resIncludes.data;
 
-      const resMoedas = await apiRetaguarda.get(`moedas`);
+      const templates = resTemplates.data;
+      const invoice = templates.find((template) => template.nome === "invoice").templateEjs;
+      const emailAssunto = templates.find((template) => template.nome === "email-assunto").templateEjs;
+      const emailCorpo = templates.find((template) => template.nome === "email-corpo").templateEjs;
+
       const moedas = resMoedas.data;
       const moedaUSD = moedas.find((moeda) => moeda.simbolo === "USD");
       const moedaEUR = moedas.find((moeda) => moeda.simbolo === "EUR");
@@ -55,11 +53,9 @@ const invoiceService = {
       await invoiceService.processarOS(authOmie, idOrdemServico, empresa, observacao);
 
       logger.info(`OS ${idOrdemServico} processada; ${observacao} !`);
-      console.log(`OS ${idOrdemServico} processada!`);
     } catch (error) {
-      await osService.trocarEtapaOS(authOmie, idOrdemServico, "10", `${error}`);
       logger.error(`Erro processamento OS ${idOrdemServico}: ${error.stack}`);
-      console.log(`Erro processamento OS ${idOrdemServico}: ${error.stack}`);
+      await osService.trocarEtapaOS(authOmie, idOrdemServico, "10", `${error}`);
     }
   },
 
@@ -78,9 +74,9 @@ const invoiceService = {
 
   enviarEmail: async (authOmie, idOrdemServico, cliente, renderedAssunto, renderedCorpo) => {
     //TODO: Remover essa linha depois dos testes
-    cliente.email = "faturamento@europartner.com.br";
+    // cliente.email = "faturamento@europartner.com.br";
     // cliente.email = "analuiza.andrade@europartner.com.br";
-    // cliente.email = "fabio@pdvseven.com.br";
+    cliente.email = "fabio@pdvseven.com.br";
 
     let observacao = "";
     if (cliente.email) {
