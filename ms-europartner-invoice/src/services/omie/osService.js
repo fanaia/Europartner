@@ -2,6 +2,30 @@ const logger = require("../../config/logger");
 const { apiOmie } = require("../../config/apiOmie");
 
 const osService = {
+  listarOS: async (omieAuth) => {
+    const body = {
+      call: "ListarOS",
+      app_key: omieAuth.appKey,
+      app_secret: omieAuth.appSecret,
+      param: [{ filtrar_por_etapa: "30" }],
+    };
+
+    try {
+      const response = await apiOmie.post("servicos/os/", body);
+      return response.data.osCadastro;
+    } catch (error) {
+      if (
+        error.response &&
+        error.response.status === 500 &&
+        error.response.data.faultstring === "ERROR: Não existem registros para a página [1]!"
+      ) {
+        return [];
+      } else {
+        throw error.message;
+      }
+    }
+  },
+
   consultarOS: async (omieAuth, codOs) => {
     const body = {
       call: "ConsultarOS",

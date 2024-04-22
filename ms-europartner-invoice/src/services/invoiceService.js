@@ -54,7 +54,7 @@ const invoiceService = {
 
       logger.info(`OS ${idOrdemServico} processada; ${observacao} !`);
     } catch (error) {
-      logger.error(`Erro processamento OS ${idOrdemServico}: ${error.stack}`);
+      logger.error(`Erro processamento OS ${idOrdemServico}: ${error}`);
       await osService.trocarEtapaOS(authOmie, idOrdemServico, "10", `${error}`);
     }
   },
