@@ -1,4 +1,3 @@
-const logger = require("../../config/logger");
 const { apiOmie } = require("../../config/apiOmie");
 
 const osService = {
@@ -14,14 +13,17 @@ const osService = {
       const response = await apiOmie.post("servicos/os/", body);
       return response.data.osCadastro;
     } catch (error) {
-      if (
+      if (error.code === 'ETIMEDOUT' || error.code === 'ENETUNREACH') {
+        throw error.code;
+      } else if (
         error.response &&
         error.response.status === 500 &&
         error.response.data.faultstring === "ERROR: Não existem registros para a página [1]!"
       ) {
         return [];
       } else {
-        throw error.message;
+        console.error("erro ao listar OSs");
+        throw error;
       }
     }
   },
