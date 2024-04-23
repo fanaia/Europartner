@@ -34,14 +34,8 @@ const osService = {
       param: [{ nCodOS: codOs }],
     };
 
-    try {
-      const response = await apiOmie.post("servicos/os/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      console.log(error.message);
-      throw error.message;
-    }
+    const response = await apiOmie.post("servicos/os/", body);
+    return response.data;
   },
 
   trocarEtapaOS: async (omieAuth, codOs, etapa, observacao) => {
@@ -68,19 +62,8 @@ const osService = {
       param: [os],
     };
 
-    try {
-      const response = await apiOmie.post("servicos/os/", body);
-      return response.data;
-    } catch (error) {
-      logger.error(`${error.stack}`);
-      logger.info(`Erro ao alterar OS: ${JSON.stringify(body)}`);
-
-      if (error.response && error.response.status === 500) {
-        throw new error("Erro ao alterar OS", error.response.data);
-      } else {
-        throw new error("Erro ao alterar OS", error.message);
-      }
-    }
+    const response = await apiOmie.post("servicos/os/", body);
+    return response.data;
   },
 
   montarOsAlterada: async (
