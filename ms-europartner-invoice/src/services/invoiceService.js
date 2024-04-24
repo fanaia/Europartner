@@ -23,7 +23,9 @@ const invoiceService = {
 
       const templates = resTemplates.data;
       const invoice = templates.find((template) => template.nome === "invoice").templateEjs;
-      const emailAssunto = templates.find((template) => template.nome === "email-assunto").templateEjs;
+      const emailAssunto = templates.find(
+        (template) => template.nome === "email-assunto"
+      ).templateEjs;
       const emailCorpo = templates.find((template) => template.nome === "email-corpo").templateEjs;
 
       const moedas = resMoedas.data;
@@ -52,7 +54,7 @@ const invoiceService = {
 
       await invoiceService.processarOS(authOmie, idOrdemServico, empresa, observacao);
 
-      logger.info(`OS ${idOrdemServico} processada; ${observacao} !`);
+      logger.info(`OS ${idOrdemServico} processada!`);
     } catch (error) {
       logger.error(`Erro processamento OS ${idOrdemServico}: ${error}`);
       await osService.trocarEtapaOS(authOmie, idOrdemServico, "10", `${error}`);
@@ -76,7 +78,7 @@ const invoiceService = {
     //TODO: Remover essa linha depois dos testes
     // cliente.email = "faturamento@europartner.com.br";
     // cliente.email = "analuiza.andrade@europartner.com.br";
-    cliente.email = "fabio@pdvseven.com.br,faturamento@europartner.com.br";
+    cliente.email = "fabio@pdvseven.com.br, analuiza.andrade@europartner.com.br";
 
     let observacao = "";
     if (cliente.email) {
