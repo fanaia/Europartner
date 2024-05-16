@@ -1,4 +1,5 @@
 const { apiRetaguarda } = require("./config/apiRetaguarda");
+const logger = require("./config/logger");
 const invoiceService = require("./services/invoiceService");
 const osService = require("./services/omie/osService");
 
