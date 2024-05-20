@@ -3,7 +3,9 @@ const logger = require("../config/logger");
 
 const generatePDF = async (htmlString) => {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: ["--no-sandbox"],
+    });
     const page = await browser.newPage();
 
     await page.setContent(htmlString);

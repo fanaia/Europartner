@@ -34,13 +34,8 @@ const anexoService = {
       param: [param],
     };
 
-    try {
-      const response = await apiOmie.post("geral/anexo/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      console.log(error.message);
-    }
+    const response = await apiOmie.post("geral/anexo/", body);
+    return response.data;
   },
 
   listarAnexo: async (omieAuth, tabela, id) => {
@@ -58,13 +53,8 @@ const anexoService = {
       param: [param],
     };
 
-    try {
-      const response = await apiOmie.post("geral/anexo/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      console.log(error.message);
-    }
+    const response = await apiOmie.post("geral/anexo/", body);
+    return response.data;
   },
 
   obterAnexo: async (omieAuth, cTaebla, nId, nIdAnexo) => {
@@ -81,13 +71,8 @@ const anexoService = {
       param: [param],
     };
 
-    try {
-      const response = await apiOmie.post("geral/anexo/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      console.log(error.message);
-    }
+    const response = await apiOmie.post("geral/anexo/", body);
+    return response.data;
   },
 
   listarAnexoBuffer: async (omieAuth, idOrdemServico) => {

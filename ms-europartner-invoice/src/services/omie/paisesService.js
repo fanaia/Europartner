@@ -20,13 +20,8 @@ const paisesService = {
       param: [{ filtrar_por_codigo: codPais }],
     };
 
-    try {
-      const response = await apiOmie.post("geral/paises/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      throw error.message;
-    }
+    const response = await apiOmie.post("geral/paises/", body);
+    return response.data;
   },
 };
 

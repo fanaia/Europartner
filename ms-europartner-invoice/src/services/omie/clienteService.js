@@ -9,13 +9,8 @@ const clienteService = {
       param: [{ codigo_cliente_omie: codCliente }],
     };
 
-    try {
-      const response = await apiOmie.post("geral/clientes/", body);
-      return response.data;
-    } catch (error) {
-      // Tratamento de erro
-      throw error.message;
-    }
+    const response = await apiOmie.post("geral/clientes/", body);
+    return response.data;
   },
 };
 
