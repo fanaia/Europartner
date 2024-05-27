@@ -78,7 +78,7 @@ const invoiceService = {
     //TODO: Remover essa linha depois dos testes
     // cliente.email = "faturamento@europartner.com.br";
     // cliente.email = "analuiza.andrade@europartner.com.br";
-    cliente.email = "fabio@pdvseven.com.br, analuiza.andrade@europartner.com.br";
+    // cliente.email = "fabio@pdvseven.com.br, analuiza.andrade@europartner.com.br";
 
     let observacao = "";
     if (cliente.email) {
