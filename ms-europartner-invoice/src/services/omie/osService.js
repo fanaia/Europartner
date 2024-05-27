@@ -13,16 +13,14 @@ const osService = {
       const response = await apiOmie.post("servicos/os/", body);
       return response.data.osCadastro;
     } catch (error) {
-      if (error.code === 'ETIMEDOUT' || error.code === 'ENETUNREACH') {
-        throw error.code;
-      } else if (
+      if (
         error.response &&
         error.response.status === 500 &&
         error.response.data.faultstring === "ERROR: Não existem registros para a página [1]!"
       ) {
         return [];
       } else {
-        console.error("erro ao listar OSs");
+        console.error(error);
         throw error;
       }
     }
