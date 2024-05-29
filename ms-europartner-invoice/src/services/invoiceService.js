@@ -75,22 +75,13 @@ const invoiceService = {
   },
 
   enviarEmail: async (authOmie, idOrdemServico, cliente, renderedAssunto, renderedCorpo) => {
-    //TODO: Remover essa linha depois dos testes
-    // cliente.email = "faturamento@europartner.com.br";
-    // cliente.email = "analuiza.andrade@europartner.com.br";
-    // cliente.email = "fabio@pdvseven.com.br, analuiza.andrade@europartner.com.br";
+    if (cliente.email.length > 0) cliente.email += ",";
+    cliente.email += "faturamento@europartner.com.br";
+ 
+    const anexos = await anexoService.listarAnexoBuffer(authOmie, idOrdemServico);
+    const info = await sendEmail(cliente.email, renderedAssunto, renderedCorpo, anexos);
 
-    let observacao = "";
-    if (cliente.email) {
-      const anexos = await anexoService.listarAnexoBuffer(authOmie, idOrdemServico);
-      const info = await sendEmail(cliente.email, renderedAssunto, renderedCorpo, anexos);
-
-      observacao = `Invoice enviada para ${cliente.email} as ${new Date().toLocaleString()}`;
-    } else {
-      observacao = "E-mail do cliente não cadastrado";
-    }
-
-    return observacao;
+    return `Invoice enviada para ${cliente.email} as ${new Date().toLocaleString()}`;
   },
 
   gerarPDFInvoice: async (template, variaveis) => {
