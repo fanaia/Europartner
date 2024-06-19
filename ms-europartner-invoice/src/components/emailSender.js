@@ -34,7 +34,7 @@ const sendEmail = async (emailTo, subject, body, attachments) => {
   try {
     await client.send(message);
   } catch (error) {
-    logger.error(`${error.stack}`);
+    logger.error(error);
     throw new Error("Erro ao enviar e-mail");
   }
 };
