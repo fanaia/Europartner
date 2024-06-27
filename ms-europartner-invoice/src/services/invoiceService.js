@@ -66,7 +66,7 @@ const invoiceService = {
       authOmie,
       idOrdemServico,
       50,
-      true,
+      false,
       empresa.adiantamento.categoria,
       empresa.adiantamento.contaCorrente,
       observacao
