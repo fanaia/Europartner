@@ -1,0 +1,13 @@
+{
+  "name": "europartner",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "ms-europartner",
+    "ms-retaguarda",
+    "ui-retaguarda"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
