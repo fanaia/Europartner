@@ -1,8 +1,11 @@
 const { apiOmie } = require("../../config/apiOmie");
+const logger = require("../../config/logger");
 
 const paisesService = {
   consultarPais: async (omieAuth, codPais) => {
-    if (codPais == 1058)
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
+    if (codPais == 1058) {
       return {
         lista_paises: [
           {
@@ -12,6 +15,7 @@ const paisesService = {
           },
         ],
       };
+    }
 
     const body = {
       call: "ListarPaises",
@@ -20,8 +24,14 @@ const paisesService = {
       param: [{ filtrar_por_codigo: codPais }],
     };
 
-    const response = await apiOmie.post("geral/paises/", body);
-    return response.data;
+    try {
+      const response = await apiOmie.post("geral/paises/", body);
+      return response.data;
+    } catch (error) {
+      logger.error(`Erro ao consultar país com código ${codPais}: ${error.message}`);
+      console.error(`Erro ao consultar país com código ${codPais}: ${error.message}`);
+      throw error;
+    }
   },
 };
 

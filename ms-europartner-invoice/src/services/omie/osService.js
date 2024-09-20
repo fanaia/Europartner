@@ -1,7 +1,10 @@
 const { apiOmie } = require("../../config/apiOmie");
+const logger = require("../../config/logger");
 
 const osService = {
   listarOS: async (omieAuth) => {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const body = {
       call: "ListarOS",
       app_key: omieAuth.appKey,
@@ -20,13 +23,16 @@ const osService = {
       ) {
         return [];
       } else {
-        console.error(error);
+        logger.error(`Erro ao listar OS: ${error.message}`);
+        console.error(`Erro ao listar OS: ${error.message}`);
         throw error;
       }
     }
   },
 
   consultarOS: async (omieAuth, codOs) => {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const body = {
       call: "ConsultarOS",
       app_key: omieAuth.appKey,
@@ -34,27 +40,39 @@ const osService = {
       param: [{ nCodOS: codOs }],
     };
 
-    const response = await apiOmie.post("servicos/os/", body);
-    return response.data;
+    try {
+      const response = await apiOmie.post("servicos/os/", body);
+      return response.data;
+    } catch (error) {
+      logger.error(`Erro ao consultar OS ${codOs}: ${error.message}`);
+      console.error(`Erro ao consultar OS ${codOs}: ${error.message}`);
+      throw error;
+    }
   },
 
   trocarEtapaOS: async (omieAuth, codOs, etapa, observacao) => {
-    const os = await osService.consultarOS(omieAuth, codOs);
-    const novaObs = os.Observacoes.observacao
-      ? observacao + "/n" + os.Observacoes.observacao
-      : observacao;
+    await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const novaOs = {
-      Cabecalho: {
-        nCodOS: codOs,
-        cEtapa: etapa,
-      },
-      Observacoes: { cObsOS: novaObs },
+    const body = {
+      call: "AlterarOS",
+      app_key: omieAuth.appKey,
+      app_secret: omieAuth.appSecret,
+      param: [{ nCodOS: codOs, cEtapa: etapa, cObservacao: observacao }],
     };
-    return await osService.alterarOS(omieAuth, novaOs);
+
+    try {
+      const response = await apiOmie.post("servicos/os/", body);
+      return response.data;
+    } catch (error) {
+      logger.error(`Erro ao trocar etapa da OS ${codOs} para ${etapa}: ${error.message}`);
+      console.error(`Erro ao trocar etapa da OS ${codOs} para ${etapa}: ${error.message}`);
+      throw error;
+    }
   },
 
   alterarOS: async (omieAuth, os) => {
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+
     const body = {
       call: "AlterarOS",
       app_key: omieAuth.appKey,
@@ -62,8 +80,14 @@ const osService = {
       param: [os],
     };
 
-    const response = await apiOmie.post("servicos/os/", body);
-    return response.data;
+    try {
+      const response = await apiOmie.post("servicos/os/", body);
+      return response.data;
+    } catch (error) {
+      logger.error(`Erro ao alterar OS ${os.nCodOS}: ${error.message}`);
+      console.error(`Erro ao alterar OS ${os.nCodOS}: ${error.message}`);
+      throw error;
+    }
   },
 
   montarOsAlterada: async (
