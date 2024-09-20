@@ -1,7 +1,10 @@
 const { apiOmie } = require("../../config/apiOmie");
+const logger = require("../../config/logger");
 
 const clienteService = {
   consultarCliente: async (omieAuth, codCliente) => {
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
     const body = {
       call: "ConsultarCliente",
       app_key: omieAuth.appKey,
@@ -9,8 +12,14 @@ const clienteService = {
       param: [{ codigo_cliente_omie: codCliente }],
     };
 
-    const response = await apiOmie.post("geral/clientes/", body);
-    return response.data;
+    try {
+      const response = await apiOmie.post("geral/clientes/", body);
+      return response.data;
+    } catch (error) {
+      logger.error(`Erro ao consultar cliente ${codCliente}: ${error.message}`);
+      console.error(`Erro ao consultar cliente ${codCliente}: ${error.message}`);
+      throw error;
+    }
   },
 };
 

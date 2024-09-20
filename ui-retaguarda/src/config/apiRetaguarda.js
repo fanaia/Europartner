@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const apiRetaguarda = axios.create({
-  baseURL: "https://ms-europartner-retaguarda.fanaia.com/api",
-  // baseURL: "http://127.0.0.1:3010/api",
+  // baseURL: "https://ms-europartner-retaguarda.fanaia.com/api",
+  baseURL: "http://127.0.0.1:3010/api",
 });
 
 apiRetaguarda.interceptors.request.use((config) => {
